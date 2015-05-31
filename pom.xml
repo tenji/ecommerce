@@ -32,7 +32,6 @@
 	<properties>
 		<spring.version>3.2.5.RELEASE</spring.version>
 		<hibernate.version>3.6.5.Final</hibernate.version>
-		<cxf.version>2.7.10</cxf.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<lucene.version>4.3.0</lucene.version>
 		<cometd.version>2.5.0</cometd.version>
@@ -213,24 +212,6 @@
 			<version>2.4.2</version>
 		</dependency>
 		<!-- SiteMesh End -->
-
-		<!-- CXF -->
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-api</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http</artifactId>
-			<version>${cxf.version}</version>
-		</dependency>
-		<!-- CXF End -->
 
 		<!-- JUnit -->
 		<dependency>
@@ -451,23 +432,9 @@
 	</dependencies>
 
 	<build>
-		<sourceDirectory>${basedir}/src</sourceDirectory>
-		<outputDirectory>${basedir}/WebRoot/WEB-INF/classes</outputDirectory>
-		<resources>
-			<resource>
-				<directory>${basedir}/src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<webappDirectory>${basedir}/WebRoot</webappDirectory>
-					<warSourceDirectory>${basedir}/WebRoot</warSourceDirectory>
-				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -478,5 +445,48 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<package.environment>dev</package.environment>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources/dev</directory>
+					</resource>
+					<resource>
+						<directory>src/main/resources</directory>
+						<includes>
+							<include>*.xml</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>product</id>
+			<properties>
+				<package.environment>product</package.environment>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources/product</directory>
+					</resource>
+					<resource>
+						<directory>src/main/resources</directory>
+						<includes>
+							<include>*.xml</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
