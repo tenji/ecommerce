@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table name="t_area" catalog="aca"></table>
+	<table name="t_rank" catalog="aca">
+		<primary-key>
+
+		</primary-key>
+	</table>
+	<table name="t_security_info" catalog="aca">
+		<primary-key>
+
+		</primary-key>
+	</table>
+	<table name="t_delivery_address" catalog="aca"></table>
+	<table name="t_education_info" catalog="aca"></table>
+	<table name="t_ram_columbus" catalog="aca"></table>
+	<table name="t_affiliate_state" catalog="aca" class="State">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="t_affiliate_city" catalog="aca" class="City">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="t_affiliate_email" catalog="aca" class="Email">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="t_property_name" catalog="aca" class="PropertyName">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="t_property_value" catalog="aca"
+		class="PropertyValue">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="t_basic_property" catalog="aca"
+		class="BasicProperty">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="t_log_admin_login" catalog="aca" class="AdminLogin">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="t_log_admin_ram_account" catalog="aca"
+		class="LogAdminRamAccount">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="sysgroup" catalog="aca" class="SysGroup">
+		<primary-key>
+			<generator class="identity"></generator>
+		</primary-key>
+	</table>
+	<table name="t_affiliate_i_say_account" catalog="aca"></table>
+	<table name="t_affiliate_evans_data_account" catalog="aca"></table>
+</hibernate-reverse-engineering>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/decorators">
+	<decorator name="admin" page="decAdmin/admin-meta.jsp">
+	    <pattern>**/list</pattern>
+	    <pattern>**/login</pattern>
+	    <pattern>**/myDashboard</pattern>
+	    <pattern>**/view</pattern>
+	    <pattern>**/avatar</pattern>
+	    <pattern>**/resetPwd</pattern>
+	</decorator>
+	
+	<decorator name="shops" page="decShops/shops-meta.jsp">
+	</decorator>
+</decorators>

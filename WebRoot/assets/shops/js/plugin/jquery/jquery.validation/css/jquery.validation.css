@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+/* jQuery Validation全局CSS样式 */
+
+input.error {
+	border: 1px dotted red;
+}
+
+label.error {
+	color: red;
+	display: none;
+}
