@@ -21,10 +21,9 @@ import com.tenjishen.model.affiliate.Ram;
 import com.tenjishen.model.affiliate.RamAccount;
 import com.tenjishen.service.affiliate.RamAccountService;
 import com.tenjishen.service.affiliate.RamService;
+import com.tenjishen.vo.PageBean;
 import com.tenjishen.vo.json.DefaultJsonBean;
 import com.tenjishen.vo.query.affiliate.RamAccountQuery;
-
-import com.tenjishen.vo.PageBean;
 
 /**
  * Controller - Rampanel Account
@@ -247,7 +246,7 @@ public class RamAccountController {
 
 				ramAccount = ramAccountService.answerSurveyExtend20141015(ramAccount); // Answer the survey(Extended)
 
-				Thread.sleep(new Random().nextInt(180000)); // Random stop within 180 seconds(3 minutes)
+				Thread.sleep(new Random().nextInt(Integer.valueOf(Constants.TIMES_BETWEEN_OPERATION) * 60)); // Random stop within N seconds
 				this.oprProgress = (int) Math.round(((i + 1)*1.0 / accountIds.length) * 100); // 修改操作进度
 			} catch (Exception e) {
 				continue ; // ignore all the exceptions

@@ -1,5 +1,7 @@
 package com.tenjishen.common.constants;
 
+import com.tenjishen.common.util.PropertyUtil;
+
 /**
  * 常量类 - 保存项目中需要用到的常量
  * 
@@ -45,5 +47,7 @@ public class Constants {
 	/*----------------------- Ram Account Related ------------------------*/
 	// Ram Site Login Url
 	public static final String RAM_SITE_LOGIN_URL = "http://www2.rampanel.com/en/login";
+	// Times Between Each Operation
+	public static final String TIMES_BETWEEN_OPERATION = (String) PropertyUtil.get("TIMES_BETWEEN_OPERATION");
 	
 }
