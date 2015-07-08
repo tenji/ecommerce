@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,8 @@ import com.tenjishen.vo.query.affiliate.RamAccountQuery;
 @Controller
 @RequestMapping("/admin/affiliate/ramAccount")
 public class RamAccountController {
+	
+	private static Logger logger = Logger.getLogger(RamAccountController.class);
 
 	// VIEW
 	protected static final String LIST_VIEW = "/admin/affiliate/ramAccount/list";
@@ -241,14 +244,14 @@ public class RamAccountController {
 		accountIds = ArrayUtil.shuffle(accountIds); // 打乱ID顺序
 		
 		for (int i = 0; i < accountIds.length; i++) {
+			RamAccount ramAccount = ramAccountService.getById(Long.valueOf(accountIds[i]));
 			try {
-				RamAccount ramAccount = ramAccountService.getById(Long.valueOf(accountIds[i]));
-
 				ramAccount = ramAccountService.answerSurveyExtend20141015(ramAccount); // Answer the survey(Extended)
 
 				Thread.sleep(new Random().nextInt(Integer.valueOf(Constants.TIMES_BETWEEN_OPERATION) * 60)); // Random stop within N seconds
 				this.oprProgress = (int) Math.round(((i + 1)*1.0 / accountIds.length) * 100); // 修改操作进度
 			} catch (Exception e) {
+				logger.error("---------- Email: " + ramAccount.getEmail() + ", RamAccount: " + ramAccount.getRam().getName() + " ----------\n" + e);
 				continue ; // ignore all the exceptions
 			}
 		}

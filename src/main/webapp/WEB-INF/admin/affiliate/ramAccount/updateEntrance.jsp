@@ -28,27 +28,9 @@ $(document).ready(function() {
 					});
 				}, 1000);
 	  			
-	  			$table = $(".table");
-	  			// 表格最后一行插入tr
-	  			var newTr = $('<tr class="active success">'
-	  				+ '<td><label><input class="ace" type="checkbox" value="" /><span class="lbl"></span></label></td>'
-	  				+ '<td>' + ($table.find("tbody tr").length + 1) + '</td>'
-	  				+ '<td>' + list.email + '</td>'
-	  				+ '<td>' + list.ram.name + '</td>'
-	  				+ '<td>' + list.unAnswered + '</td>'
-	  				+ '<td>' + list.pointsBeforeOpr + '</td>'
-	  				+ '<td>' + list.pointsAfterOpr + '</td>'
-	  				+ '<td>' + list.redeemStatus + '</td>'
-	  				+ '<td>' + list.latestRedeemTime + '</td>'
-	  				+ '<td>' + list.latestCheckTime + '</td>'
-	  				+ '<td>' + list.latestOprTime + '</td>'
-	  				+ '<td>'
-	  					+ '<button type="button" class="btn btn-success btn-xs btn-read" value="' + list.id + '">查看</button>'
-	  					+ ' <button type="button" class="btn btn-success btn-xs btn-edit" value="' + list.id + '">编辑</button>'
-	  					+ ' <button type="button" class="btn btn-success btn-xs btn-delete" value="' + list.id + '">删除</button>'
-	  				+ '</td>'
-	  				+ '</tr>').hide().slideDown(1500);
-	  			$($table.find("tbody")).append(newTr);
+	  			setTimeout(function() {
+	  				location.reload(); // 刷新当前页面
+	  			}, 2000);
 	  			
 	  			// 清空添加框内容
 	  			EC.clearFormData($("modal-edit .form-horizontal")); // 清空表单
