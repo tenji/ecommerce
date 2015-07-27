@@ -49,5 +49,7 @@ public class Constants {
 	public static final String RAM_SITE_LOGIN_URL = "http://www2.rampanel.com/en/login";
 	// Times Between Each Operation
 	public static final String TIMES_BETWEEN_OPERATION = (String) PropertyUtil.get("TIMES_BETWEEN_OPERATION");
+	// Text Content
+	public static String TEXT_CONTENT = (String) PropertyUtil.get("textContent");
 	
 }

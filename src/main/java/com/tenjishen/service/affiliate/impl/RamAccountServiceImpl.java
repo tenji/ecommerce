@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,8 @@ public class RamAccountServiceImpl extends BaseServiceImpl<RamAccount, Long> imp
 	private RamAccountDao ramAccountDao;
 	@Resource
 	private LogAdminRamAccountDao logAdminRamAccountDao;
+	
+	private static Logger logger = Logger.getLogger(RamAccountServiceImpl.class);
 
 	@Resource
 	public void setBaseDao(RamAccountDao ramColumbusDao) {
@@ -608,9 +611,9 @@ public class RamAccountServiceImpl extends BaseServiceImpl<RamAccount, Long> imp
 		} else {
 			final HtmlPage loginPage = webClient.getPage(Constants.RAM_SITE_LOGIN_URL);
 			final HtmlForm loginForm = loginPage.getForms().get(1);
-			System.out.println("---------- Login Form Details: ----------");
-			System.out.println(loginForm.asText());
-			System.out.println("---------- Login Form End ----------");
+			logger.debug("---------- Login Form Details: ----------");
+			logger.debug(loginForm.asText());
+			logger.debug("---------- Login Form End ----------");
 			
 			final HtmlTextInput userNameInput = loginForm.getInputByName("suid");
 			final HtmlPasswordInput passwordInput = loginForm.getInputByName("spwd");
@@ -635,7 +638,7 @@ public class RamAccountServiceImpl extends BaseServiceImpl<RamAccount, Long> imp
 				page = submitInput.click();
 			}
 		} catch (Exception e) {
-			System.out.println("---------- No need to update profile! Just continue ----------");
+			logger.debug("---------- No need to update profile! Just continue ----------");
 		}
 		/* end */
 		
@@ -736,9 +739,9 @@ public class RamAccountServiceImpl extends BaseServiceImpl<RamAccount, Long> imp
 				
 				// 1. Dealing with text inputs
 				List<HtmlTextInput> textInputs = (List<HtmlTextInput>) panelListSurveyForm.getByXPath("//input[@type='text']");
-				String[] textContents = {"Nope", "None", "Nothing comes to mind now!", "Nothing to share!"};
+				String textContents = Constants.TEXT_CONTENT;
 				for (HtmlTextInput textInput : textInputs) {
-					System.out.println("---------- Text Input: " + textInput.asXml() + " ----------");
+					logger.debug("---------- Text Input: " + textInput.asXml() + " ----------");
 					
 					try {
 						textInput.click();
@@ -751,10 +754,10 @@ public class RamAccountServiceImpl extends BaseServiceImpl<RamAccount, Long> imp
 						} else if (textInputName.equals("webFreqMonth")) { // times/month
 							continue; // just continue
 						} else {
-							textInput.type(textContents[new Random().nextInt(textContents.length)]);
+							textInput.type(textContents);
 						}
 					} catch (Exception e) {
-						System.out.println("---------- Text Input Click Exception ----------");
+						logger.error("---------- Text Input Click Exception ----------");
 					}
 					
 					Thread.sleep(new Random().nextInt(3000)); // 每次点击随机暂停3秒以内
@@ -763,7 +766,7 @@ public class RamAccountServiceImpl extends BaseServiceImpl<RamAccount, Long> imp
 				// 2. Dealing with select options
 				List<HtmlSelect> selects = (List<HtmlSelect>) panelListSurveyForm.getByXPath("//select");
 				for (HtmlSelect select : selects) {
-					System.out.println(select.asXml());
+					logger.debug(select.asXml());
 					// Select an option randomly
 					select.setSelectedAttribute(select.getOption(new Random().nextInt(select.getOptionSize() - 1)), true);
 					
@@ -817,14 +820,22 @@ public class RamAccountServiceImpl extends BaseServiceImpl<RamAccount, Long> imp
 				
 				// 4. Dealing with checkbox inputs
 				List<String> surveyCheckBoxOptions = getUncheckedCheckBoxOptions(panelListSurveyForm);
-				// Generate two random numbers
-				int[] ranNums = new int[2];
+				// Generate one random numbers
+				int ranNums;
 				for (String checkBoxOption : surveyCheckBoxOptions) {
-					System.out.println(checkBoxOption);
+					logger.debug(checkBoxOption);
 					List<HtmlInput> checkBoxInputs = panelListSurveyForm.getInputsByName(checkBoxOption);
-					if (checkBoxInputs.size() < 3) {
+					if (checkBoxInputs.size() <= 3) {
+						logger.debug("---------- Check Box Inputs Size <= 3. ----------");
+						int count = 0;
 						for (HtmlInput checkBoxInput : checkBoxInputs) {
+							if (count == 0) {
+								checkBoxInput.setChecked(true);
+								count++;
+								continue;
+							}
 							if (checkBoxInput.getId().equals("surveyPartId")) { // I rarely (or never) visit the site(The Arizona Republic), just continue.
+								count++;
 								continue;
 							}
 							if (new Random().nextInt(2) == 1) { // 33.3 percents to be checked
@@ -832,12 +843,16 @@ public class RamAccountServiceImpl extends BaseServiceImpl<RamAccount, Long> imp
 							}
 						}
 					} else { 
-						// Only check two options randomly.
-						ranNums[0] = new Random().nextInt(checkBoxInputs.size() - 2);				
-						ranNums[1] = new Random().nextInt(checkBoxInputs.size() - 2);
+						logger.debug("---------- Check Box Inputs Size > 3. ----------");
+						// Check one specific option and the other options randomly.
+						ranNums = new Random().nextInt(checkBoxInputs.size() - 3);				
 						for (int j = 0; j < checkBoxInputs.size(); j++) {
-							if (ranNums[0] == j || ranNums[1] == j) {
+							if (ranNums == j) {
 								checkBoxInputs.get(j).setChecked(true);
+							} else {
+								if (new Random().nextInt(2) == 1) { // 33.3 percents to be checked
+									checkBoxInputs.get(j).setChecked(true);
+								}
 							}
 						}
 					}
